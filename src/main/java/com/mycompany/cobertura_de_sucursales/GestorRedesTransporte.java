@@ -17,6 +17,20 @@ import java.io.IOException;
 
 public class GestorRedesTransporte {
     private RedTransporte redTransporteActual;
+    private int t; //valor de t
+    
+    public GestorRedesTransporte() {
+        this.t = 3; // puede ser cambiado, esta por defecto
+    }
+    
+    public void seT(int nuevoT) {
+        this.t = nuevoT;
+        System.out.println("Valor de t actualizado a: " + nuevoT);
+    }
+    
+    public int getT(){
+        return t;
+    }
 
     public void cargarRedDesdeArchivo(String rutaArchivo) {
         Gson gson = new GsonBuilder().create();
@@ -32,4 +46,17 @@ public class GestorRedesTransporte {
     public RedTransporte getRedTransporteActual() {
         return redTransporteActual;
     }
+    
+        // Método para evaluar la cobertura
+    public void evaluarCobertura() {
+        if (redTransporteActual == null) {
+            System.out.println("No hay red de transporte cargada.");
+            return;
+        }        
+    }
+    
+    
+    
 }
+
+
