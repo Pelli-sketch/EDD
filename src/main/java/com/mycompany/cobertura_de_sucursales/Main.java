@@ -11,12 +11,19 @@ package com.mycompany.cobertura_de_sucursales;
 public class Main {
     public static void main(String[] args) {
         GestorRedesTransporte gestor = new GestorRedesTransporte();
-        gestor.cargarRedDesdeArchivo("ruta/a/mi/archivo.json");
+        gestor.cargarRedDesdeArchivo("Caracas.json");
         
         // Para acceder a la red cargada
         RedTransporte redActual = gestor.getRedTransporteActual();
         if (redActual != null) {
-            System.out.println("Paradas cargadas: " + redActual.getParadas().size());
+            System.out.println("Paradas cargadas: " + redActual);
         }
+        
+        gestor.agregarLinea("Línea 6");
+        gestor.agregarParadaALinea("Línea 6", "Zoológico");
+        gestor.agregarParadaALinea("Línea 6", "La Rinconada");
+        
     }
+    
+   
 }

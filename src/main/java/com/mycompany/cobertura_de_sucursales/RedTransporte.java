@@ -8,48 +8,59 @@ package com.mycompany.cobertura_de_sucursales;
  *
  * @author pablo
  */
-import java.util.List;
+class Parada {
+    String nombre;
+    Parada siguiente;
 
-public class RedTransporte {
-    private String nombre;
-    private List<Parada> paradas;
-
-    // Constructor, getters y setters
-    public RedTransporte(String nombre, List<Parada> paradas) {
+    public Parada(String nombre) {
         this.nombre = nombre;
-        this.paradas = paradas;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public List<Parada> getParadas() {
-        return paradas;
+        this.siguiente = null;
     }
 }
 
-class Parada {
-    private String id;
-    private double latitud;
-    private double longitud;
+class Linea {
+    String nombre;
+    Parada primeraParada;
+    Linea siguiente;
 
-    // Constructor, getters y setters
-    public Parada(String id, double latitud, double longitud) {
-        this.id = id;
-        this.latitud = latitud;
-        this.longitud = longitud;
+    public Linea(String nombre) {
+        this.nombre = nombre;
+        this.primeraParada = null;
+        this.siguiente = null;
     }
 
-    public String getId() {
-        return id;
+    public void agregarParada(String nombreParada) {
+        Parada nuevaParada = new Parada(nombreParada);
+        if (primeraParada == null) {
+            primeraParada = nuevaParada;
+        } else {
+            Parada actual = primeraParada;
+            while (actual.siguiente != null) {
+                actual = actual.siguiente;
+            }
+            actual.siguiente = nuevaParada;
+        }
+    }
+}
+
+class RedTransporte {
+    String nombre;
+    Linea primeraLinea;
+
+    public RedTransporte() {
+        this.nombre = "";
+        this.primeraLinea = null;
     }
 
-    public double getLatitud() {
-        return latitud;
-    }
-
-    public double getLongitud() {
-        return longitud;
+    public void agregarLinea(Linea nuevaLinea) {
+        if (primeraLinea == null) {
+            primeraLinea = nuevaLinea;
+        } else {
+            Linea actual = primeraLinea;
+            while (actual.siguiente != null) {
+                actual = actual.siguiente;
+            }
+            actual.siguiente = nuevaLinea;
+        }
     }
 }
