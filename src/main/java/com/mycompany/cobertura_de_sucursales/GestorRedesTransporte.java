@@ -11,7 +11,9 @@ package com.mycompany.cobertura_de_sucursales;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -33,13 +35,24 @@ public class GestorRedesTransporte {
     }
 
     public void cargarRedDesdeArchivo(String rutaArchivo) {
-        Gson gson = new GsonBuilder().create();
-        try (FileReader reader = new FileReader(rutaArchivo)) {
-            RedTransporte nuevaRed = gson.fromJson(reader, RedTransporte.class);
-            this.redTransporteActual = nuevaRed;
-            System.out.println("Red de transporte cargada: " + nuevaRed);
-        } catch (IOException e) {
-            System.err.println("Error al cargar el archivo: " + e.getMessage());
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
+        fileChooser.setFileFilter(filter);
+
+        int resultado = fileChooser.showOpenDialog(null);
+
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivoSeleccionado = fileChooser.getSelectedFile();
+            Gson gson = new GsonBuilder().create();
+
+            try (FileReader reader = new FileReader(archivoSeleccionado)) {
+                redTransporteActual = gson.fromJson(reader, RedTransporte.class);
+                System.out.println("Red de transporte cargada: " + redTransporteActual.nombre);
+            } catch (IOException e) {
+                System.err.println("Error al cargar el archivo: " + e.getMessage());
+            }
+        } else {
+            System.out.println("No se seleccionó ningún archivo.");
         }
     }
 
