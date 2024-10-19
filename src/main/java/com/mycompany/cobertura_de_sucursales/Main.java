@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.mycompany.cobertura_de_sucursales;
 
 /**
@@ -15,6 +19,7 @@ public class Main {
             System.out.println("Paradas cargadas: " + redActual);
         }
         
+        //ejemplo... sinceramente eso es lo que dice la documentación de gson
         gestor.agregarLinea("Línea 6");
         gestor.agregarParadaALinea("Línea 6", "Zoológico");
         gestor.agregarParadaALinea("Línea 6", "La Rinconada");
