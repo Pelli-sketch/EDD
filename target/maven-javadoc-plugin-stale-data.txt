@@ -1,0 +1,50 @@
+-J-Duser.language=
+-J-Duser.country=
+@options
+@packages
+-classpath
+'C:/Users/pablo/.m2/repository/com/google/code/gson/gson/2.8.8/gson-2.8.8.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'21'
+-sourcepath
+'C:/Users/pablo/Documents/NetBeansProjects/Cobertura_de_sucursales/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2024. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/pablo/Documents/NetBeansProjects/Cobertura_de_sucursales/target/reports/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Cobertura_de_sucursales 1.0-SNAPSHOT API'
+-use
+-version
+-windowtitle
+'Cobertura_de_sucursales 1.0-SNAPSHOT API'
+com.mycompany.cobertura_de_sucursales
+C:\Users\pablo\.m2\repository\com\google\code\gson\gson\2.8.8\gson-2.8.8.jar = 1729347751000
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\src\main\java = 1729253852894
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\allclasses-index.html = 1729455821703
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\allpackages-index.html = 1729455821705
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\copy.svg = 1729455821731
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\element-list = 1729455821663
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\help-doc.html = 1729455821726
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\index-all.html = 1729455821717
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\index.html = 1729455821722
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\link.svg = 1729455821733
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\member-search-index.js = 1729455821710
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\module-search-index.js = 1729455821706
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\overview-tree.html = 1729455821692
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\package-search-index.js = 1729455821707
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\script.js = 1729455821730
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\search-page.js = 1729455821737
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\search.html = 1729455821720
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\search.js = 1729455821735
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\stylesheet.css = 1729455821728
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\tag-search-index.js = 1729455821711
+C:\Users\pablo\Documents\NetBeansProjects\Cobertura_de_sucursales\target\reports\apidocs\type-search-index.js = 1729455821709

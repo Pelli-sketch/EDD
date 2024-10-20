@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.mycompany.cobertura_de_sucursales","l":"GestorRedesTransporte"},{"p":"com.mycompany.cobertura_de_sucursales","l":"Main"}];updateSearchResults();
