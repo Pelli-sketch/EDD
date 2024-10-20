@@ -16,9 +16,9 @@ public class Cobertura_de_sucursales {
         }
         
         //ejemplo... sinceramente eso es lo que dice la documentación de gson
-        gestor.agregarLinea("Línea 6");
-        gestor.agregarParadaALinea("Línea 6", "Zoológico");
-        gestor.agregarParadaALinea("Línea 6", "La Rinconada");
+        gestor.agregarLinea("Linea 6");
+        gestor.agregarParadaALinea("Linea 6", "Zoologico");
+        gestor.agregarParadaALinea("Linea 6", "La Rinconada");
         
     }
     
