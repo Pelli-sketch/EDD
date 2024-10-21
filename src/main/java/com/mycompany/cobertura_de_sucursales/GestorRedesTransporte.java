@@ -5,20 +5,14 @@ package com.mycompany.cobertura_de_sucursales;
  * @author pablo
  */
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.File;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.FileReader;
-import java.io.IOException;
-
 /**
  * Gestiona las operaciones de la red de transporte.
  */
 public class GestorRedesTransporte {
     private RedTransporte redTransporteActual;
     private int t; //valor de t
+    
+    
     /**
      * Constructor del gestor.
      */
@@ -36,30 +30,6 @@ public class GestorRedesTransporte {
     
     public int getT(){
         return t;
-    }
-    /**
-     * Carga una red de transporte desde un archivo JSON seleccionado por el usuario.
-     */
-    public void cargarRedDesdeArchivo(String rutaArchivo) {
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
-        fileChooser.setFileFilter(filter);
-
-        int resultado = fileChooser.showOpenDialog(null);
-
-        if (resultado == JFileChooser.APPROVE_OPTION) {
-            File archivoSeleccionado = fileChooser.getSelectedFile();
-            Gson gson = new GsonBuilder().create();
-
-            try (FileReader reader = new FileReader(archivoSeleccionado)) {
-                redTransporteActual = gson.fromJson(reader, RedTransporte.class);
-                System.out.println("Red de transporte cargada: " + redTransporteActual.nombre);
-            } catch (IOException e) {
-                System.err.println("Error al cargar el archivo: " + e.getMessage());
-            }
-        } else {
-            System.out.println("No se seleccionó ningún archivo.");
-        }
     }
     /**
      * Agrega una nueva línea a la red de transporte actual.
