@@ -113,6 +113,7 @@ public class GestorRedesTransporte {
         System.out.println("Evaluando cobertura con t = " + t);
         
     }
+
     
     
     

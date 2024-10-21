@@ -1,5 +1,7 @@
-com\mycompany\cobertura_de_sucursales\Cobertura_de_sucursales.class
 com\mycompany\cobertura_de_sucursales\RedTransporte.class
-com\mycompany\cobertura_de_sucursales\Parada.class
 com\mycompany\cobertura_de_sucursales\GestorRedesTransporte.class
+com\mycompany\cobertura_de_sucursales\Cobertura_de_sucursales$1.class
+com\mycompany\cobertura_de_sucursales\Cobertura_de_sucursales.class
+com\mycompany\cobertura_de_sucursales\Interfaz.class
+com\mycompany\cobertura_de_sucursales\Parada.class
 com\mycompany\cobertura_de_sucursales\Linea.class

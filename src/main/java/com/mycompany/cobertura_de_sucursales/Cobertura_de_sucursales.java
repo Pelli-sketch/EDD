@@ -19,8 +19,6 @@ public class Cobertura_de_sucursales {
         gestor.agregarLinea("Linea 6");
         gestor.agregarParadaALinea("Linea 6", "Zoologico");
         gestor.agregarParadaALinea("Linea 6", "La Rinconada");
-        
     }
-    
    
 }
