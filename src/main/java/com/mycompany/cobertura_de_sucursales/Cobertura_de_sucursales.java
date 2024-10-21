@@ -8,9 +8,11 @@ package com.mycompany.cobertura_de_sucursales;
  *
  * @author pablo
  */
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,6 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Cobertura_de_sucursales extends javax.swing.JFrame {
+
     private RedTransporte redTransporteActual;
 
     /**
@@ -119,12 +122,30 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         int resultado = fileChooser.showOpenDialog(null);
 
         if (resultado == JFileChooser.APPROVE_OPTION) {
-            File archivoSeleccionado = fileChooser.getSelectedFile();
-            Gson gson = new GsonBuilder().create();
 
-            try (FileReader reader = new FileReader(archivoSeleccionado)) {
-                redTransporteActual = gson.fromJson(reader, RedTransporte.class);
-                System.out.println("Red de transporte cargada: " + redTransporteActual.nombre);
+            try (FileReader reader = new FileReader(fileChooser.getSelectedFile())) {
+                JsonParser parser = new JsonParser();
+                JsonObject sistemaDeTransporteOjeto = parser.parse(reader).getAsJsonObject();
+                for (var claveValor : sistemaDeTransporteOjeto.entrySet()) {
+                    String nombreSisTransporte = claveValor.getKey();
+                    for (var lineaObjeto : claveValor.getValue().getAsJsonArray()) {
+                        for (var lineaClaveValor : lineaObjeto.getAsJsonObject().entrySet()) {
+                            JsonArray paradas = lineaClaveValor.getValue().getAsJsonArray();
+                            for (var paradaElemento : paradas) {
+                                if (paradaElemento.isJsonPrimitive()) {
+                                    String paradasMetro = paradaElemento.getAsString();
+                                } else if (paradaElemento.isJsonObject()) {
+                                    var Conexion = paradaElemento.getAsJsonObject();
+                                    for (var ConexionClaveValor : Conexion.entrySet()) {
+                                        String Estacion1 = ConexionClaveValor.getKey();
+                                        String Estacion2 = ConexionClaveValor.getValue().getAsString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
             } catch (IOException e) {
                 System.err.println("Error al cargar el archivo: " + e.getMessage());
             }
@@ -178,20 +199,20 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                 new Cobertura_de_sucursales().setVisible(true);
             }
         });
-        
+
         GestorRedesTransporte gestor = new GestorRedesTransporte();
-        
+
         // Para acceder a la red cargada
         RedTransporte redActual = gestor.getRedTransporteActual();
         if (redActual != null) {
             System.out.println("Paradas cargadas: " + redActual);
         }
-        
+
         //ejemplo... sinceramente eso es lo que dice la documentación de gson
         gestor.agregarLinea("Linea 6");
         gestor.agregarParadaALinea("Linea 6", "Zoologico");
         gestor.agregarParadaALinea("Linea 6", "La Rinconada");
-           
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
