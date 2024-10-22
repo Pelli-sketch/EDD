@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class Cobertura_de_sucursales extends javax.swing.JFrame {
 
-    private RedTransporte redTransporteActual;
+    private Grafo redTransporteActual;
 
     /**
      * Creates new form Cobertura_de_sucursales
@@ -29,6 +29,7 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
     public Cobertura_de_sucursales() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.redTransporteActual = new Grafo();
     }
 
     /**
@@ -122,22 +123,43 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         int resultado = fileChooser.showOpenDialog(null);
 
         if (resultado == JFileChooser.APPROVE_OPTION) {
-
+            Lista<Parada> nodosParadas = new Lista();
             try (FileReader reader = new FileReader(fileChooser.getSelectedFile())) {
                 JsonParser parser = new JsonParser();
                 JsonObject sistemaDeTransporteOjeto = parser.parse(reader).getAsJsonObject();
                 for (var claveValor : sistemaDeTransporteOjeto.entrySet()) {
                     String nombreSisTransporte = claveValor.getKey();
+                    this.redTransporteActual.setNombreRedTransporte(nombreSisTransporte);
                     for (var lineaObjeto : claveValor.getValue().getAsJsonArray()) {
                         for (var lineaClaveValor : lineaObjeto.getAsJsonObject().entrySet()) {
                             JsonArray paradas = lineaClaveValor.getValue().getAsJsonArray();
                             for (var paradaElemento : paradas) {
                                 if (paradaElemento.isJsonPrimitive()) {
-                                    String paradasMetro = paradaElemento.getAsString();
+                                    String paradaMetro = paradaElemento.getAsString();
+                                    Nodo<Parada> aux = nodosParadas.getpFirst();
+                                    boolean encontrado = false;
+                                    while (aux != null) {
+                                      if (aux.getData().getNombre().equals(paradaMetro)){
+                                      encontrado = true;
+                                      break;
+                                      } 
+                                     
+                                        aux = aux.getpNext();
+                                    }
+                                    if (encontrado == false){
+                                     Parada parada = new Parada(paradaMetro, lineaClaveValor.getKey());
+                                   if (nodosParadas.getpLast() != null){
+                                        parada.getSiguientes().InsertarFinal(nodosParadas.getpLast().getData());
+                                        nodosParadas.getpLast().getData().getSiguientes().InsertarFinal(parada);
+                                   } 
+                                    nodosParadas.InsertarFinal(parada);  
+                                    }
+                                   
                                 } else if (paradaElemento.isJsonObject()) {
                                     var Conexion = paradaElemento.getAsJsonObject();
                                     for (var ConexionClaveValor : Conexion.entrySet()) {
                                         String Estacion1 = ConexionClaveValor.getKey();
+                                        
                                         String Estacion2 = ConexionClaveValor.getValue().getAsString();
                                     }
                                 }
@@ -146,6 +168,7 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                     }
 
                 }
+                this.redTransporteActual.setParadas(nodosParadas);
             } catch (IOException e) {
                 System.err.println("Error al cargar el archivo: " + e.getMessage());
             }
@@ -199,20 +222,6 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                 new Cobertura_de_sucursales().setVisible(true);
             }
         });
-
-        GestorRedesTransporte gestor = new GestorRedesTransporte();
-
-        // Para acceder a la red cargada
-        RedTransporte redActual = gestor.getRedTransporteActual();
-        if (redActual != null) {
-            System.out.println("Paradas cargadas: " + redActual);
-        }
-
-        //ejemplo... sinceramente eso es lo que dice la documentación de gson
-        gestor.agregarLinea("Linea 6");
-        gestor.agregarParadaALinea("Linea 6", "Zoologico");
-        gestor.agregarParadaALinea("Linea 6", "La Rinconada");
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
