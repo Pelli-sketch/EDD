@@ -140,12 +140,10 @@ public class Grafo {
 class NodoDoble {
     String parada;
     NodoDoble siguiente;
-    NodoDoble anterior;
 
     NodoDoble(String parada) {
         this.parada = parada;
         this.siguiente = null;
-        this.anterior = null;
     }
 }
 
@@ -158,36 +156,40 @@ class ListaDoble {
         cola = null;
     }
 
+    // Agregar al final de la lista
     public void agregarFinal(String parada) {
         NodoDoble nuevo = new NodoDoble(parada);
         if (cabeza == null) {
+            // La lista está vacía
             cabeza = nuevo;
             cola = nuevo;
         } else {
+            // Agregar al final de la lista
             cola.siguiente = nuevo;
-            nuevo.anterior = cola;
             cola = nuevo;
         }
     }
 
+    // Remover del frente de la lista
     public String removerFrente() {
         if (cabeza == null) {
-            return null; // o lanza una excepción si prefieres
+            return null; // o lanzar una excepción si lo prefieres
         }
         String parada = cabeza.parada;
         cabeza = cabeza.siguiente;
-        if (cabeza != null) {
-            cabeza.anterior = null;
-        } else {
-            cola = null; // Si la lista queda vacía, también actualiza la cola
+        if (cabeza == null) {
+            // Si la lista queda vacía, actualizamos cola a null
+            cola = null;
         }
         return parada;
     }
 
+    // Verificar si la lista está vacía
     public boolean estaVacia() {
         return cabeza == null;
     }
 
+    // Obtener el tamaño de la lista
     public int tamaño() {
         int tamaño = 0;
         NodoDoble actual = cabeza;
