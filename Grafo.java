@@ -16,7 +16,17 @@ public class Grafo {
         graph.setAttribute("ui.stylesheet", "node { size: 20px; fill-color: red; } edge { fill-color: gray; }");
         establecerCiudad(ciudadInicial);
     }
+    
+    // Este es el método que permite acceder al grafo desde otras clases
+    public Graph getGraph() {
+        return this.graph;
+    }
 
+     // Nuevo método getSucursales
+    public ListaEnlazada getSucursales() {
+        return sucursales; // Devuelve la lista enlazada de sucursales
+    }
+    
     // Mostrar grafo
     public void mostrarGrafo() {
         graph.display();
