@@ -8,7 +8,11 @@ package com.mycompany.cobertura_de_sucursales;
  *
  * @author pablo
  */
+import java.lang.reflect.Method;
+
 public class Interfaz2 extends javax.swing.JFrame {
+    
+    
 
     /**
      * Creates new form Interfaz2
@@ -213,20 +217,31 @@ public class Interfaz2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
+        
+    
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
-
+    public static String llamarMetodo(Object objeto, String nombreMetodo) {
+        try {
+            // Obtiene el método por su nombre y tipo de retorno
+            Method metodo = objeto.getClass().getMethod(nombreMetodo);
+            // Invoca el método y retorna el resultado
+            return (String) metodo.invoke(objeto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Retorna null si hay un error
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Choice choice1;
+    public java.awt.Choice choice1;
     private javax.swing.JButton jButton1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialog2;
@@ -237,8 +252,8 @@ public class Interfaz2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    public javax.swing.JTextField jTextField1;
+    public javax.swing.JTextField jTextField2;
+    public javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

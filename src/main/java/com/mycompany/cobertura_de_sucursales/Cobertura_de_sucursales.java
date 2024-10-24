@@ -8,17 +8,18 @@ package com.mycompany.cobertura_de_sucursales;
  *
  * @author pablo
  */
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
+import javax.swing.JOptionPane;
 
 public class Cobertura_de_sucursales extends javax.swing.JFrame {
-    private RedTransporte redTransporteActual;
 
     /**
      * Creates new form Cobertura_de_sucursales
@@ -37,11 +38,34 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jDialog2 = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         cargarRedDesdeArchivo = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jDialog2Layout = new javax.swing.GroupLayout(jDialog2.getContentPane());
+        jDialog2.getContentPane().setLayout(jDialog2Layout);
+        jDialog2Layout.setHorizontalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog2Layout.setVerticalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,13 +75,6 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Ingresa");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -74,12 +91,6 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(42, 42, 42))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -89,7 +100,10 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                         .addGap(121, 121, 121)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cargarRedDesdeArchivo)
-                            .addComponent(jLabel1))))
+                            .addComponent(jLabel1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(jButton1)))
                 .addContainerGap(137, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -101,11 +115,9 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(cargarRedDesdeArchivo)
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(40, 40, 40))
+                .addGap(58, 58, 58)
+                .addComponent(jButton1)
+                .addGap(36, 36, 36))
         );
 
         pack();
@@ -120,17 +132,29 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
 
         if (resultado == JFileChooser.APPROVE_OPTION) {
             File archivoSeleccionado = fileChooser.getSelectedFile();
-            Gson gson = new GsonBuilder().create();
+            Gson gson = new Gson();
 
             try (FileReader reader = new FileReader(archivoSeleccionado)) {
-                redTransporteActual = gson.fromJson(reader, RedTransporte.class);
-                System.out.println("Red de transporte cargada: " + redTransporteActual.nombre);
+                // Deserializar en un JsonObject para mayor flexibilidad
+                JsonObject redTransporteObjeto = gson.fromJson(reader, JsonObject.class);
+
+                // Procesar el objeto JSON
+                for (Map.Entry<String, JsonElement> entry : redTransporteObjeto.entrySet()) {
+                    System.out.println(entry.getKey() + " -> " + entry.getValue());
+
+                    Interfaz2 a = new Interfaz2();
+                    a.setVisible(true);
+                    this.setVisible(false);
+                    
+                }
             } catch (IOException e) {
-                System.err.println("Error al cargar el archivo: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error al cargar el archivo: " + e.getMessage());
             }
         } else {
-            System.out.println("No se seleccionó ningún archivo.");
+            JOptionPane.showMessageDialog(this, "No se selecciono ningun archivo.");
         }
+
+
     }//GEN-LAST:event_cargarRedDesdeArchivoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -138,12 +162,6 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         b.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Interfaz2 a = new Interfaz2();
-        a.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,26 +196,14 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                 new Cobertura_de_sucursales().setVisible(true);
             }
         });
-        
-        GestorRedesTransporte gestor = new GestorRedesTransporte();
-        
-        // Para acceder a la red cargada
-        RedTransporte redActual = gestor.getRedTransporteActual();
-        if (redActual != null) {
-            System.out.println("Paradas cargadas: " + redActual);
-        }
-        
-        //ejemplo... sinceramente eso es lo que dice la documentación de gson
-        gestor.agregarLinea("Linea 6");
-        gestor.agregarParadaALinea("Linea 6", "Zoologico");
-        gestor.agregarParadaALinea("Linea 6", "La Rinconada");
-           
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cargarRedDesdeArchivo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JDialog jDialog2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
