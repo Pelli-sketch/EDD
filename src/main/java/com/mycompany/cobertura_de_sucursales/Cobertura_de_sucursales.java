@@ -9,8 +9,10 @@ package com.mycompany.cobertura_de_sucursales;
  * @author pablo
  */
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -21,10 +23,13 @@ import javax.swing.JOptionPane;
 
 public class Cobertura_de_sucursales extends javax.swing.JFrame {
 
+    private Grafo grafo;
+
     /**
      * Creates new form Cobertura_de_sucursales
      */
     public Cobertura_de_sucursales() {
+        grafo = new Grafo("");
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -131,22 +136,45 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         int resultado = fileChooser.showOpenDialog(null);
 
         if (resultado == JFileChooser.APPROVE_OPTION) {
-            File archivoSeleccionado = fileChooser.getSelectedFile();
-            Gson gson = new Gson();
 
-            try (FileReader reader = new FileReader(archivoSeleccionado)) {
-                // Deserializar en un JsonObject para mayor flexibilidad
-                JsonObject redTransporteObjeto = gson.fromJson(reader, JsonObject.class);
+            try (FileReader reader = new FileReader(fileChooser.getSelectedFile())) {
+                grafo = new Grafo("");
+                JsonParser parser = new JsonParser();
+                JsonObject sistemaDeTransporteOjeto = parser.parse(reader).getAsJsonObject();
+                for (var claveValor : sistemaDeTransporteOjeto.entrySet()) {
+                    String nombreSisTransporte = claveValor.getKey();
+                    this.grafo.establecerCiudad(nombreSisTransporte);
+                    for (var lineaObjeto : claveValor.getValue().getAsJsonArray()) {
+                        for (var lineaClaveValor : lineaObjeto.getAsJsonObject().entrySet()) {
+                            JsonArray paradas = lineaClaveValor.getValue().getAsJsonArray();
+                            for (var paradaElemento : paradas) {
+                                if (paradaElemento.isJsonPrimitive()) {
+                                    String paradaMetro = paradaElemento.getAsString();
+                                    if (this.grafo.getSucursales().getPrimero() == null){
+                                        this.grafo.colocarSucursal(paradaMetro);
+                                    }else{
+                                        var adyacente = this.grafo.getSucursales().getUltimo();
+                                        adyacente.adyacentes.agregar(paradaMetro);
+                                        this.grafo.colocarSucursal(paradaMetro);
+                                        this.grafo.getSucursales().getUltimo().adyacentes.agregar(adyacente.parada);
+                                        this.grafo.getGraph().addEdge(adyacente.parada + paradaMetro, adyacente.parada, paradaMetro);
+                                    }
+                                } else if (paradaElemento.isJsonObject()) {
+                                    var Conexion = paradaElemento.getAsJsonObject();
+                                    for (var ConexionClaveValor : Conexion.entrySet()) {
+                                        String Estacion1 = ConexionClaveValor.getKey();
+                                        String Estacion2 = ConexionClaveValor.getValue().getAsString();
 
-                // Procesar el objeto JSON
-                for (Map.Entry<String, JsonElement> entry : redTransporteObjeto.entrySet()) {
-                    System.out.println(entry.getKey() + " -> " + entry.getValue());
-
-                    Interfaz2 a = new Interfaz2();
-                    a.setVisible(true);
-                    this.setVisible(false);
-                    
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+                Interfaz2 a = new Interfaz2(this.grafo);
+                a.setVisible(true);
+                this.setVisible(false);
+
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error al cargar el archivo: " + e.getMessage());
             }
@@ -158,9 +186,10 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
     }//GEN-LAST:event_cargarRedDesdeArchivoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Interfaz3 b = new Interfaz3();
-        b.setVisible(true);
-        this.setVisible(false);
+        this.grafo.mostrarGrafo();
+//        Interfaz3 b = new Interfaz3();
+//        b.setVisible(true);
+//        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

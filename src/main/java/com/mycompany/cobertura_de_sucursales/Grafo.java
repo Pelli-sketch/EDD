@@ -1,35 +1,36 @@
 package com.mycompany.cobertura_de_sucursales;
 
-
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
 
 public class Grafo {
-    private Graph graph;
+
+    private Graph grafo;
     private int t; // Valor de t según la ciudad
     private ListaEnlazada sucursales; // Lista enlazada
-    private String ciudad; // Ciudad seleccionada
+    private String ciudad;// Ciudad seleccionada
 
     public Grafo(String ciudadInicial) {
-        graph = new SingleGraph("Red de Transporte");
+        System.setProperty("org.graphstream.ui", "swing");
+        grafo = new SingleGraph("Red de Transporte");
         sucursales = new ListaEnlazada(); // Inicializamos la lista enlazada
-        graph.setAttribute("ui.stylesheet", "node { size: 20px; fill-color: red; } edge { fill-color: gray; }");
+        grafo.setAttribute("ui.stylesheet", "node { size: 14px; fill-color: red; } edge { fill-color: gray; }");
         establecerCiudad(ciudadInicial);
     }
-    
+
     // Este es el método que permite acceder al grafo desde otras clases
     public Graph getGraph() {
-        return this.graph;
+        return this.grafo;
     }
 
-     // Nuevo método getSucursales
+    // Nuevo método getSucursales
     public ListaEnlazada getSucursales() {
         return sucursales; // Devuelve la lista enlazada de sucursales
     }
-    
+
     // Mostrar grafo
     public void mostrarGrafo() {
-        graph.display();
+        grafo.display();
     }
 
     // Establecer valor de t basado en la ciudad
@@ -46,20 +47,26 @@ public class Grafo {
 
     // Colocar sucursal en una parada
     public boolean colocarSucursal(String parada) {
-        if (graph.getNode(parada) != null) {
-            sucursales.agregar(parada); // Agregamos a la lista enlazada
-            graph.getNode(parada).setAttribute("ui.class", "sucursal");
-            graph.getNode(parada).setAttribute("ui.label", "Sucursal");
-            return true;
+        NodoLista aux = sucursales.getPrimero();
+        while (aux != null) {
+            if (aux.parada == null ? parada == null : aux.parada.equals(parada)) {
+                return true;
+            }
+            aux = aux.siguiente;
         }
+        sucursales.agregar(parada); // Agregamos a la lista enlazada
+        grafo.addNode(parada);
+        grafo.getNode(parada).setAttribute("ui.class", "sucursal");
+        grafo.getNode(parada).setAttribute("ui.label", "Sucursal");
+
         return false; // La parada no existe
     }
 
     // Des-seleccionar sucursal
     public boolean quitarSucursal(String parada) {
         if (sucursales.eliminar(parada)) { // Eliminamos de la lista enlazada
-            graph.getNode(parada).removeAttribute("ui.class");
-            graph.getNode(parada).setAttribute("ui.label", "");
+            grafo.getNode(parada).removeAttribute("ui.class");
+            grafo.getNode(parada).setAttribute("ui.label", "");
             return true;
         }
         return false; // No hay sucursal en la parada
@@ -72,22 +79,22 @@ public class Grafo {
         return visitadas; // Devuelve las paradas visitadas
     }
 
- private void dfs(String parada, ListaEnlazada visitadas, int profundidad) {
-    if (profundidad < 0 || visitadas.contiene(parada)) {
-        return;
+    private void dfs(String parada, ListaEnlazada visitadas, int profundidad) {
+        if (profundidad < 0 || visitadas.contiene(parada)) {
+            return;
+        }
+
+        visitadas.agregar(parada);
+        Node nodo = grafo.getNode(parada);
+
+        // Usar edges() para obtener todas las aristas del nodo
+        nodo.edges().forEach(arista -> {
+            // Obtener el nodo opuesto directamente
+            Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
+            String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
+            dfs(vecino, visitadas, profundidad - 1);
+        });
     }
-    
-    visitadas.agregar(parada);
-    Node nodo = graph.getNode(parada);
-    
-    // Usar edges() para obtener todas las aristas del nodo
-    nodo.edges().forEach(arista -> {
-        // Obtener el nodo opuesto directamente
-        Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
-        String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
-        dfs(vecino, visitadas, profundidad - 1);
-    });
-}
 
     // Ver cobertura con BFS
     public ListaEnlazada coberturaBFS(String sucursal) {
@@ -97,37 +104,37 @@ public class Grafo {
     }
 
     // Implementación de BFS
-   private void bfs(String parada, ListaEnlazada visitadas, int maxProfundidad) {
-    ListaDoble lista = new ListaDoble();
-    lista.agregarFinal(parada);
-    int nivel = 0;
+    private void bfs(String parada, ListaEnlazada visitadas, int maxProfundidad) {
+        ListaDoble lista = new ListaDoble();
+        lista.agregarFinal(parada);
+        int nivel = 0;
 
-    while (!lista.estaVacia() && nivel <= maxProfundidad) {
-        int tamañoNivel = lista.tamaño();
-        for (int i = 0; i < tamañoNivel; i++) {
-            String paradaActual = lista.removerFrente();
-            if (!visitadas.contiene(paradaActual)) {
-                visitadas.agregar(paradaActual);
-                Node nodo = graph.getNode(paradaActual);
-                
-                // Usar edges() para obtener todas las aristas del nodo
-                nodo.edges().forEach(arista -> {
-                    // Obtener el nodo opuesto directamente
-                    Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
-                    String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
-                    lista.agregarFinal(vecino);
-                });
+        while (!lista.estaVacia() && nivel <= maxProfundidad) {
+            int tamañoNivel = lista.tamaño();
+            for (int i = 0; i < tamañoNivel; i++) {
+                String paradaActual = lista.removerFrente();
+                if (!visitadas.contiene(paradaActual)) {
+                    visitadas.agregar(paradaActual);
+                    Node nodo = grafo.getNode(paradaActual);
+
+                    // Usar edges() para obtener todas las aristas del nodo
+                    nodo.edges().forEach(arista -> {
+                        // Obtener el nodo opuesto directamente
+                        Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
+                        String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
+                        lista.agregarFinal(vecino);
+                    });
+                }
             }
+            nivel++;
         }
-        nivel++;
     }
-}
 
     // Revisar cobertura total de la ciudad
     public ListaEnlazada revisarCoberturaTotal() {
         ListaEnlazada paradasSinCobertura = new ListaEnlazada();
 
-        for (Node nodo : graph) {
+        for (Node nodo : grafo) {
             paradasSinCobertura.agregar(nodo.getId());
         }
 
@@ -147,7 +154,9 @@ public class Grafo {
         return paradasSinCobertura; // Devuelve las sugerencias
     }
 }
+
 class NodoDoble {
+
     String parada;
     NodoDoble siguiente;
 
@@ -158,6 +167,7 @@ class NodoDoble {
 }
 
 class ListaDoble {
+
     private NodoDoble cabeza;
     private NodoDoble cola;
 
@@ -211,38 +221,59 @@ class ListaDoble {
     }
 }
 // Implementación de la clase ListaEnlazada
+
 class NodoLista {
+
     String parada;
     NodoLista siguiente;
+    ListaEnlazada adyacentes;
 
     NodoLista(String parada) {
+        this.adyacentes = new ListaEnlazada();
         this.parada = parada;
         this.siguiente = null;
     }
 }
 
 class ListaEnlazada {
-    private NodoLista primero;
 
+    private NodoLista primero;
+    private NodoLista ultimo;
+
+    public NodoLista getUltimo() {
+        return ultimo;
+    }
+    
+    
     public ListaEnlazada() {
         this.primero = null;
     }
 
     public void agregar(String parada) {
-        NodoLista nuevo = new NodoLista(parada);
-        if (primero == null) {
-            primero = nuevo;
-        } else {
-            NodoLista temp = primero;
-            while (temp.siguiente != null) {
-                temp = temp.siguiente;
-            }
-            temp.siguiente = nuevo;
+        if(this.primero == null) {
+            this.primero = new NodoLista(parada);
+            this.ultimo = this.primero;
+        }else{
+            this.ultimo.siguiente = new NodoLista(parada);
+            this.ultimo = this.ultimo.siguiente;
         }
+        
+//        NodoLista nuevo = new NodoLista(parada);
+//        if (primero == null) {
+//            primero = nuevo;
+//        } else {
+//            NodoLista temp = primero;
+//            while (temp.siguiente != null) {
+//                temp = temp.siguiente;
+//            }
+//            temp.siguiente = nuevo;
+//        }
     }
 
     public boolean eliminar(String parada) {
-        if (primero == null) return false;
+        if (primero == null) {
+            return false;
+        }
 
         if (primero.parada.equals(parada)) {
             primero = primero.siguiente;
