@@ -123,7 +123,14 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Método que se ejecuta al activar la acción de cargar una red desde un
+     * archivo. Este método permite al usuario seleccionar un archivo .json que
+     * contiene la información de un sistema de transporte, y luego procesa este
+     * archivo para cargar los datos en un grafo.
+     *
+     * @param evt El evento de acción que desencadena este método.
+     */
     private void cargarRedDesdeArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarRedDesdeArchivoActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
