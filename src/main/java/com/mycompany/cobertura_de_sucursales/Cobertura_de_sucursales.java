@@ -8,17 +8,13 @@ package com.mycompany.cobertura_de_sucursales;
  *
  * @author pablo
  */
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
 import javax.swing.JOptionPane;
 
 public class Cobertura_de_sucursales extends javax.swing.JFrame {
@@ -147,23 +143,47 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                     for (var lineaObjeto : claveValor.getValue().getAsJsonArray()) {
                         for (var lineaClaveValor : lineaObjeto.getAsJsonObject().entrySet()) {
                             JsonArray paradas = lineaClaveValor.getValue().getAsJsonArray();
+                            String ultimaparada = null;
                             for (var paradaElemento : paradas) {
                                 if (paradaElemento.isJsonPrimitive()) {
                                     String paradaMetro = paradaElemento.getAsString();
-                                    if (this.grafo.getSucursales().getPrimero() == null){
+                                    if (this.grafo.getSucursales().getPrimero() == null) {
                                         this.grafo.colocarSucursal(paradaMetro);
-                                    }else{
-                                        var adyacente = this.grafo.getSucursales().getUltimo();
-                                        adyacente.adyacentes.agregar(paradaMetro);
+                                        ultimaparada = paradaMetro;
+                                    } else {
                                         this.grafo.colocarSucursal(paradaMetro);
-                                        this.grafo.getSucursales().getUltimo().adyacentes.agregar(adyacente.parada);
-                                        this.grafo.getGraph().addEdge(adyacente.parada + paradaMetro, adyacente.parada, paradaMetro);
+                                        var adyacente = this.grafo.ObtenerNodo(ultimaparada);
+                                        if (adyacente != null) {
+                                            System.out.println(adyacente.parada);
+                                            System.out.println(paradaMetro);
+                                            adyacente.adyacentes.agregar(paradaMetro);
+                                        }
+
+                                        ultimaparada = paradaMetro;
+//                                        this.grafo.getSucursales().getUltimo().adyacentes.agregar(adyacente.parada);
+
                                     }
                                 } else if (paradaElemento.isJsonObject()) {
                                     var Conexion = paradaElemento.getAsJsonObject();
                                     for (var ConexionClaveValor : Conexion.entrySet()) {
                                         String Estacion1 = ConexionClaveValor.getKey();
+                                        this.grafo.colocarSucursal(Estacion1);
+                                        var adyacente = this.grafo.ObtenerNodo(ultimaparada);
+                                        if (adyacente != null) {
+                                            adyacente.adyacentes.agregar(Estacion1);
+                                        }
+
+                                        ultimaparada = Estacion1;
                                         String Estacion2 = ConexionClaveValor.getValue().getAsString();
+                                        this.grafo.getSucursales().getUltimo().adyacentes.agregar(Estacion2);
+                                        this.grafo.colocarSucursal(Estacion2);
+//                                        this.grafo.getGraph().addEdge(Estacion2 + Estacion1, Estacion2, Estacion1);
+
+//                                        try {
+//                                            this.grafo.getGraph().addEdge(Estacion2 + Estacion1, Estacion2, Estacion1);
+//                                        } catch (Exception e) {
+//
+//                                        }
 
                                     }
                                 }
@@ -171,6 +191,7 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                         }
                     }
                 }
+
                 Interfaz2 a = new Interfaz2(this.grafo);
                 a.setVisible(true);
                 this.setVisible(false);

@@ -1,28 +1,34 @@
 package com.mycompany.cobertura_de_sucursales;
 
-import org.graphstream.graph.*;
-import org.graphstream.graph.implementations.*;
-
+//import org.graphstream.graph.*;
+//import org.graphstream.graph.implementations.*;
 public class Grafo {
 
-    private Graph grafo;
+//    private Graph grafo;
     private int t; // Valor de t según la ciudad
+
+    public int getT() {
+        return t;
+    }
+
+    public void setT(int t) {
+        this.t = t;
+    }
     private ListaEnlazada sucursales; // Lista enlazada
     private String ciudad;// Ciudad seleccionada
 
     public Grafo(String ciudadInicial) {
-        System.setProperty("org.graphstream.ui", "swing");
-        grafo = new SingleGraph("Red de Transporte");
+//        System.setProperty("org.graphstream.ui", "swing");
+//        grafo = new SingleGraph("Red de Transporte");
         sucursales = new ListaEnlazada(); // Inicializamos la lista enlazada
-        grafo.setAttribute("ui.stylesheet", "node { size: 14px; fill-color: red; } edge { fill-color: gray; }");
+//        grafo.setAttribute("ui.stylesheet", "node { size: 14px; fill-color: red; } edge { fill-color: gray; }");
         establecerCiudad(ciudadInicial);
     }
 
     // Este es el método que permite acceder al grafo desde otras clases
-    public Graph getGraph() {
-        return this.grafo;
-    }
-
+//    public Graph getGraph() {
+//        return this.grafo;
+//    }
     // Nuevo método getSucursales
     public ListaEnlazada getSucursales() {
         return sucursales; // Devuelve la lista enlazada de sucursales
@@ -30,7 +36,7 @@ public class Grafo {
 
     // Mostrar grafo
     public void mostrarGrafo() {
-        grafo.display();
+//        grafo.display();
     }
 
     // Establecer valor de t basado en la ciudad
@@ -45,19 +51,28 @@ public class Grafo {
         }
     }
 
+    public NodoLista ObtenerNodo(String parada) {
+        NodoLista actual = sucursales.getPrimero();
+        while (actual != null) {
+            if (actual.parada.equals(parada)) {
+                return actual;
+            }
+            actual = actual.siguiente;
+        }
+        return null;
+    }
+
     // Colocar sucursal en una parada
     public boolean colocarSucursal(String parada) {
         NodoLista aux = sucursales.getPrimero();
-        while (aux != null) {
-            if (aux.parada == null ? parada == null : aux.parada.equals(parada)) {
-                return true;
-            }
-            aux = aux.siguiente;
+        if (sucursales.contiene(parada)) {
+            return true;
         }
+
         sucursales.agregar(parada); // Agregamos a la lista enlazada
-        grafo.addNode(parada);
-        grafo.getNode(parada).setAttribute("ui.class", "sucursal");
-        grafo.getNode(parada).setAttribute("ui.label", "Sucursal");
+//        grafo.addNode(parada);
+//        grafo.getNode(parada).setAttribute("ui.class", parada);
+//        grafo.getNode(parada).setAttribute("ui.label", parada);
 
         return false; // La parada no existe
     }
@@ -65,8 +80,8 @@ public class Grafo {
     // Des-seleccionar sucursal
     public boolean quitarSucursal(String parada) {
         if (sucursales.eliminar(parada)) { // Eliminamos de la lista enlazada
-            grafo.getNode(parada).removeAttribute("ui.class");
-            grafo.getNode(parada).setAttribute("ui.label", "");
+//            grafo.getNode(parada).removeAttribute("ui.class");
+//            grafo.getNode(parada).setAttribute("ui.label", "");
             return true;
         }
         return false; // No hay sucursal en la parada
@@ -85,15 +100,15 @@ public class Grafo {
         }
 
         visitadas.agregar(parada);
-        Node nodo = grafo.getNode(parada);
+//        Node nodo = grafo.getNode(parada);
 
         // Usar edges() para obtener todas las aristas del nodo
-        nodo.edges().forEach(arista -> {
-            // Obtener el nodo opuesto directamente
-            Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
-            String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
-            dfs(vecino, visitadas, profundidad - 1);
-        });
+//        nodo.edges().forEach(arista -> {
+//            // Obtener el nodo opuesto directamente
+//            Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
+//            String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
+//            dfs(vecino, visitadas, profundidad - 1);
+//        });
     }
 
     // Ver cobertura con BFS
@@ -115,15 +130,15 @@ public class Grafo {
                 String paradaActual = lista.removerFrente();
                 if (!visitadas.contiene(paradaActual)) {
                     visitadas.agregar(paradaActual);
-                    Node nodo = grafo.getNode(paradaActual);
+//                    Node nodo = grafo.getNode(paradaActual);
 
                     // Usar edges() para obtener todas las aristas del nodo
-                    nodo.edges().forEach(arista -> {
-                        // Obtener el nodo opuesto directamente
-                        Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
-                        String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
-                        lista.agregarFinal(vecino);
-                    });
+//                    nodo.edges().forEach(arista -> {
+//                        // Obtener el nodo opuesto directamente
+//                        Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
+//                        String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
+//                        lista.agregarFinal(vecino);
+//                    });
                 }
             }
             nivel++;
@@ -131,24 +146,23 @@ public class Grafo {
     }
 
     // Revisar cobertura total de la ciudad
-    public ListaEnlazada revisarCoberturaTotal() {
-        ListaEnlazada paradasSinCobertura = new ListaEnlazada();
-
-        for (Node nodo : grafo) {
-            paradasSinCobertura.agregar(nodo.getId());
-        }
-
-        NodoLista actual = sucursales.getPrimero();
-        while (actual != null) {
-            ListaEnlazada cubiertas = new ListaEnlazada();
-            dfs(actual.parada, cubiertas, t);
-            paradasSinCobertura.eliminarVarios(cubiertas);
-            actual = actual.siguiente;
-        }
-
-        return paradasSinCobertura; // Devuelve las paradas sin cobertura
-    }
-
+//    public ListaEnlazada revisarCoberturaTotal() {
+//        ListaEnlazada paradasSinCobertura = new ListaEnlazada();
+//
+//        for (Node nodo : grafo) {
+//            paradasSinCobertura.agregar(nodo.getId());
+//        }
+//
+//        NodoLista actual = sucursales.getPrimero();
+//        while (actual != null) {
+//            ListaEnlazada cubiertas = new ListaEnlazada();
+//            dfs(actual.parada, cubiertas, t);
+//            paradasSinCobertura.eliminarVarios(cubiertas);
+//            actual = actual.siguiente;
+//        }
+//
+//        return paradasSinCobertura; // Devuelve las paradas sin cobertura
+//    }
     // Sugerir paradas para colocar sucursales
     public ListaEnlazada sugerirSucursales(ListaEnlazada paradasSinCobertura) {
         return paradasSinCobertura; // Devuelve las sugerencias
@@ -227,6 +241,7 @@ class NodoLista {
     String parada;
     NodoLista siguiente;
     ListaEnlazada adyacentes;
+    Boolean sucursal = false;
 
     NodoLista(String parada) {
         this.adyacentes = new ListaEnlazada();
@@ -243,21 +258,20 @@ class ListaEnlazada {
     public NodoLista getUltimo() {
         return ultimo;
     }
-    
-    
+
     public ListaEnlazada() {
         this.primero = null;
     }
 
     public void agregar(String parada) {
-        if(this.primero == null) {
+        if (this.primero == null) {
             this.primero = new NodoLista(parada);
             this.ultimo = this.primero;
-        }else{
+        } else {
             this.ultimo.siguiente = new NodoLista(parada);
             this.ultimo = this.ultimo.siguiente;
         }
-        
+
 //        NodoLista nuevo = new NodoLista(parada);
 //        if (primero == null) {
 //            primero = nuevo;
