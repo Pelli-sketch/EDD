@@ -146,8 +146,8 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                                         this.grafo.colocarSucursal(paradaMetro);
                                         var adyacente = this.grafo.ObtenerNodo(ultimaparada);
                                         if (adyacente != null) {
-                                            System.out.println(adyacente.parada);
-                                            System.out.println(paradaMetro);
+//                                            System.out.println(adyacente.parada);
+//                                            System.out.println(paradaMetro);
                                             adyacente.adyacentes.agregar(paradaMetro);
                                         }
 

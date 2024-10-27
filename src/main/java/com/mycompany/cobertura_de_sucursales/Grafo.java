@@ -3,9 +3,10 @@ package com.mycompany.cobertura_de_sucursales;
 public class Grafo {
 
     private int t; // Valor de t según la ciudad
-    
     private ListaEnlazada sucursales; // Lista enlazada
     private String ciudad;// Ciudad seleccionada
+    
+
     /**
      * Constructor de la clase Grafo.
      *
@@ -15,16 +16,16 @@ public class Grafo {
         sucursales = new ListaEnlazada(); // Inicializamos la lista enlazada
         establecerCiudad(ciudadInicial);
     }
-    
+
     /**
      * Obtiene el valor de t.
      *
      * @return El valor de t.
-     */    
+     */
     public int getT() {
         return t;
-    }    
-    
+    }
+
     /**
      * Establece el valor de t basado en la ciudad seleccionada.
      *
@@ -33,8 +34,7 @@ public class Grafo {
     public void setT(int t) {
         this.t = t;
     }
-    
-    
+
     /**
      * Obtiene la lista de sucursales.
      *
@@ -64,9 +64,10 @@ public class Grafo {
             t = 2; // Valor por defecto
         }
     }
-    
+
     /**
-     * Obtiene un nodo de la lista de sucursales que corresponde a la parada dada.
+     * Obtiene un nodo de la lista de sucursales que corresponde a la parada
+     * dada.
      *
      * @param parada La parada a buscar.
      * @return El nodo correspondiente a la parada, o null si no se encuentra.
@@ -112,7 +113,8 @@ public class Grafo {
     }
 
     /**
-     * Realiza una búsqueda en profundidad (DFS) para verificar la cobertura desde una sucursal.
+     * Realiza una búsqueda en profundidad (DFS) para verificar la cobertura
+     * desde una sucursal.
      *
      * @param sucursal La sucursal desde la cual iniciar la búsqueda.
      * @return Una lista de las paradas visitadas durante la búsqueda.
@@ -132,7 +134,8 @@ public class Grafo {
     }
 
     /**
-     * Realiza una búsqueda en amplitud (BFS) para verificar la cobertura desde una sucursal.
+     * Realiza una búsqueda en amplitud (BFS) para verificar la cobertura desde
+     * una sucursal.
      *
      * @param sucursal La sucursal desde la cual iniciar la búsqueda.
      * @return Una lista de las paradas visitadas durante la búsqueda.
@@ -160,8 +163,10 @@ public class Grafo {
             nivel++;
         }
     }
+
     /**
-     * Sugiere paradas para colocar sucursales basadas en la lista de paradas sin cobertura.
+     * Sugiere paradas para colocar sucursales basadas en la lista de paradas
+     * sin cobertura.
      *
      * @param paradasSinCobertura La lista de paradas sin cobertura.
      * @return La lista de sugerencias de paradas para colocar sucursales.
@@ -171,6 +176,7 @@ public class Grafo {
     }
 
 }
+
 /**
  * Clase que representa un nodo doble en una lista doble.
  */
@@ -178,6 +184,7 @@ class NodoDoble {
 
     String parada;
     NodoDoble siguiente;
+
     /**
      * Constructor de la clase NodoDoble.
      *
@@ -188,6 +195,7 @@ class NodoDoble {
         this.siguiente = null;
     }
 }
+
 /**
  * Clase que representa una lista doble.
  */
@@ -195,6 +203,7 @@ class ListaDoble {
 
     private NodoDoble cabeza;
     private NodoDoble cola;
+
     /**
      * Constructor de la clase ListaDoble.
      */
@@ -263,6 +272,7 @@ class ListaDoble {
         return tamaño;
     }
 }
+
 /**
  * Clase que representa un nodo en una lista enlazada.
  */
@@ -272,6 +282,7 @@ class NodoLista {
     NodoLista siguiente;
     ListaEnlazada adyacentes;
     Boolean sucursal = false;
+
     /**
      * Constructor de la clase NodoLista.
      *
@@ -283,6 +294,7 @@ class NodoLista {
         this.siguiente = null;
     }
 }
+
 /**
  * Clase que representa una lista enlazada.
  */
@@ -297,6 +309,7 @@ class ListaEnlazada {
     public ListaEnlazada() {
         this.primero = null;
     }
+
     /**
      * Agrega un nuevo nodo a la lista.
      *
@@ -312,6 +325,7 @@ class ListaEnlazada {
         }
 
     }
+
     /**
      * Elimina un nodo de la lista.
      *
@@ -338,6 +352,7 @@ class ListaEnlazada {
         }
         return false;
     }
+
     /**
      * Verifica si la lista contiene una parada específica.
      *
@@ -354,6 +369,7 @@ class ListaEnlazada {
         }
         return false;
     }
+
     /**
      * Elimina varios nodos de la lista que se encuentran en otra lista.
      *
@@ -366,6 +382,7 @@ class ListaEnlazada {
             actual = actual.siguiente;
         }
     }
+
     /**
      * Obtiene el primer nodo de la lista.
      *
@@ -374,7 +391,7 @@ class ListaEnlazada {
     public NodoLista getPrimero() {
         return primero;
     }
-    
+
     /**
      * Obtiene el último nodo de la lista.
      *
@@ -383,14 +400,31 @@ class ListaEnlazada {
     public NodoLista getUltimo() {
         return ultimo;
     }
+
     /**
      * Verifica si la lista está vacía.
      *
      * @return true si la lista está vacía, false en caso contrario.
-     */    
+     */
     public boolean estaVacia() {
         return primero == null;
     }
+
+    public String recorrer() {
+        NodoLista pAux;
+        String resultado = "";
+        if (estaVacia()) {
+            resultado = "La lista está vacía";
+        } else {
+            pAux = primero;
+            while (pAux != null) {
+                resultado += pAux.parada + " "; // Concatenar el nombre de la parada
+                pAux = pAux.siguiente; // Próximo nodo
+            }
+        }
+        return resultado.trim(); // Retorna el resultado sin espacios al final
+    }
+
     /**
      * Muestra la lista enlazada.
      */
@@ -402,4 +436,7 @@ class ListaEnlazada {
         }
         System.out.println();
     }
+    
+
 }
+    

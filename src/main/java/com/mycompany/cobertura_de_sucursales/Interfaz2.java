@@ -11,6 +11,8 @@ import org.graphstream.graph.implementations.*;
 public class Interfaz2 extends javax.swing.JFrame {
 
     private Grafo grafo;
+    private SistemaMetro metro;
+    private ListaEnlazada paradasSinCobertura;
 
     /**
      * Creates new form Interfaz2
@@ -20,6 +22,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         initComponents();
         this.Tinput.setText(String.valueOf(this.grafo.getT()));
         this.setLocationRelativeTo(null);
+
     }
 
     /**
@@ -38,15 +41,21 @@ public class Interfaz2 extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         Tinput = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        NewSucursalinput = new javax.swing.JTextField();
+        NewSucursalInput = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        texto = new javax.swing.JLabel();
+        NewLineaInput = new javax.swing.JTextField();
         comboBoxTipoBusqueda = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        textAreaCobertura = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        pantalla = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        NewParadasInput = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -101,9 +110,9 @@ public class Interfaz2 extends javax.swing.JFrame {
 
         jLabel2.setText("Ingrese nuevo valor t:");
 
-        NewSucursalinput.addActionListener(new java.awt.event.ActionListener() {
+        NewSucursalInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewSucursalinputActionPerformed(evt);
+                NewSucursalInputActionPerformed(evt);
             }
         });
 
@@ -111,28 +120,15 @@ public class Interfaz2 extends javax.swing.JFrame {
 
         jLabel4.setText("Ver Cobertura Sucursales:");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        texto.setText("Agregar nueva Línea y Parada:");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jLabel5.setText("Agregar nueva línea:");
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        NewLineaInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                NewLineaInputActionPerformed(evt);
             }
         });
 
-        comboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BFS", "DFS", "TOTAL" }));
         comboBoxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxTipoBusquedaActionPerformed(evt);
@@ -148,6 +144,27 @@ public class Interfaz2 extends javax.swing.JFrame {
 
         jLabel6.setText("Sugerir dependiendo t:");
 
+        jButton3.setText("Sugerir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        pantalla.setColumns(20);
+        pantalla.setRows(5);
+        jScrollPane1.setViewportView(pantalla);
+
+        jLabel5.setText("Línea");
+
+        jLabel7.setText("Paradas");
+
+        NewParadasInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewParadasInputActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -156,77 +173,98 @@ public class Interfaz2 extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(60, 60, 60)
-                        .addComponent(Tinput, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Tinput, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(NewSucursalInput, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(114, 114, 114))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(90, 90, 90)
+                                .addComponent(jButton3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(53, 53, 53)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(NewSucursalinput, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(36, 36, 36))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel6))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(16, 16, 16)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel6)))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(121, 121, 121)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel3))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(comboBoxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(texto)
+                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(NewLineaInput, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel5))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel7)
+                                            .addComponent(NewParadasInput, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textAreaCobertura, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboBoxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(34, 34, 34)))
                 .addGap(60, 60, 60))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(240, 240, 240)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(230, 230, 230)
-                        .addComponent(jButton2)
-                        .addGap(114, 114, 114)
-                        .addComponent(jButton1)))
+                .addGap(230, 230, 230)
+                .addComponent(jButton2)
+                .addGap(110, 110, 110)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(245, 245, 245))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabel1)
                 .addGap(30, 30, 30)
+                .addComponent(jLabel1)
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(NewSucursalinput, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboBoxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(Tinput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(NewSucursalInput, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboBoxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(textAreaCobertura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(texto)
+                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1))
-                        .addGap(78, 78, 78))))
+                            .addComponent(jLabel7))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(NewLineaInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NewParadasInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addGap(78, 78, 78))
         );
 
         pack();
@@ -238,11 +276,12 @@ public class Interfaz2 extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
     /**
-     * Maneja el campo de entrada para el valor de 't'.
-     * Este método se ejecuta cuando se activa en el campo de texto
-     * asociado a la entrada del valor 't'. Intenta convertir la entrada del
-     * usuario a un entero y, si tiene éxito, establece este valor en el grafo.
-     * Si la conversión falla, muestra un mensaje de error al usuario.
+     * Maneja el campo de entrada para el valor de 't'. Este método se ejecuta
+     * cuando se activa en el campo de texto asociado a la entrada del valor
+     * 't'. Intenta convertir la entrada del usuario a un entero y, si tiene
+     * éxito, establece este valor en el grafo. Si la conversión falla, muestra
+     * un mensaje de error al usuario.
+     *
      * @param evt el evento de acción que ha activado este método.
      */
     private void TinputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TinputActionPerformed
@@ -264,8 +303,8 @@ public class Interfaz2 extends javax.swing.JFrame {
      *
      * @param evt el evento de acción que ha activado este método.
      */
-    private void NewSucursalinputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSucursalinputActionPerformed
-        String nombreEstacion = NewSucursalinput.getText();
+    private void NewSucursalInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSucursalInputActionPerformed
+        String nombreEstacion = NewSucursalInput.getText();
         NodoLista parada = this.grafo.ObtenerNodo(nombreEstacion);
         if (parada != null) {
             if (parada.sucursal) {
@@ -279,11 +318,25 @@ public class Interfaz2 extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(this, "Error no se encontro la parada: " + nombreEstacion);
 
-    }//GEN-LAST:event_NewSucursalinputActionPerformed
+    }//GEN-LAST:event_NewSucursalInputActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    private void NewLineaInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewLineaInputActionPerformed
+
+        String numeroLinea = NewLineaInput.getText();
+        JOptionPane.showInputDialog(this,
+                "Ingrese el número de la línea (ejemplo: Linea 6):",
+                "Nueva Línea", JOptionPane.QUESTION_MESSAGE);
+        if (numeroLinea == null || numeroLinea.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Debe ingresar un número de línea válido",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
+
+    }//GEN-LAST:event_NewLineaInputActionPerformed
     /**
      * Este método se ejecuta cuando se activa el botón, y se encarga de crear y
      * visualizar un grafo utilizando la biblioteca GraphStream. El grafo
@@ -330,34 +383,66 @@ public class Interfaz2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void comboBoxTipoBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxTipoBusquedaActionPerformed
-//        if ((String) comboBoxTipoBusqueda.getSelectedItem()) == null {
-//            return;    
-//    
-//        if (comboBoxTipoBusqueda.getSelectedItem() == "BFS") {
-//            this.grafo.setTipoBusqueda(TipoBusqueda.BFS);
-//        }else{
-//            this.grafo.setTipoBusqueda(TipoBusqueda.DFS);
-//        }
-//        this.grafo.asignarCoberturas();
-//        if (this.nombreParadaSeleccionada != null) {
-//            Vertice vertice = grafo.buscarVertice(nombreParadaSeleccionada);
-//            Visitado[] cobertura = vertice.getCobertura();
-//            textAreaCobertura.getText("");
-//            for (Visitado visitado : cobertura) {
-//                textAreaCobertura.append(visitado.toString() + "\n");
-//            }
-//            textAreaCobertura.setCaretPosition(0);
-//        }
+
+        String selectedValue = comboBoxTipoBusqueda.getSelectedItem().toString();
+
+        textAreaCobertura.setText(selectedValue);
+
 
     }//GEN-LAST:event_comboBoxTipoBusquedaActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            this.pantalla.setText(paradasSinCobertura.recorrer());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error. Revise que los datos se ingresaron correctamente");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+    /**
+     * Este método se ejecuta cuando se escribe una lista de paradas, y se encarga de crear la nueva linea.     *
+     * @param evt el evento de acción que ha activado este método.
+     */
+    private void NewParadasInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewParadasInputActionPerformed
+        String numeroLinea = NewLineaInput.getText();
+        String paradasInput = JOptionPane.showInputDialog(this,
+                "Ingrese las paradas separadas por comas.\n"
+                + "Para estaciones con conexión use el formato 'EstacionA:EstacionB'\n"
+                + "Ejemplo: Zoologico, Estacion1, Estacion2, La Rinconada:Caracas",
+                "Paradas de la Línea",
+                JOptionPane.QUESTION_MESSAGE);
+
+        String[] paradas = paradasInput.split(",");
+        
+        for (int i = 0; i < paradas.length; i++) {
+            paradas[i] = paradas[i].trim();
+        }
+        if(paradas.length < 2) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar al menos 2 paradas", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            boolean resultado = this.metro.agregarLinea(numeroLinea, paradas);
+            if (resultado) {
+                JOptionPane.showMessageDialog(this, "Linea agregada exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(this, "No se pudo agregar la línea", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(this, "Error al agregar linea", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_NewParadasInputActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JTextField NewSucursalinput;
+    public javax.swing.JTextField NewLineaInput;
+    private javax.swing.JTextField NewParadasInput;
+    public javax.swing.JTextField NewSucursalInput;
     public javax.swing.JTextField Tinput;
     private javax.swing.JComboBox<String> comboBoxTipoBusqueda;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialog2;
     private javax.swing.JDialog jDialog3;
@@ -367,7 +452,10 @@ public class Interfaz2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
-    public javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea pantalla;
+    private javax.swing.JTextField textAreaCobertura;
+    private javax.swing.JLabel texto;
     // End of variables declaration//GEN-END:variables
 }
