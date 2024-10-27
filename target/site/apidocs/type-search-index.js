@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.mycompany.cobertura_de_sucursales","l":"Cobertura_de_sucursales"},{"p":"com.mycompany.cobertura_de_sucursales","l":"Grafo"},{"p":"com.mycompany.cobertura_de_sucursales","l":"Interfaz2"},{"p":"com.mycompany.cobertura_de_sucursales","l":"Interfaz3"}];updateSearchResults();

@@ -1,35 +1,45 @@
 package com.mycompany.cobertura_de_sucursales;
 
-//import org.graphstream.graph.*;
-//import org.graphstream.graph.implementations.*;
 public class Grafo {
 
-//    private Graph grafo;
     private int t; // Valor de t según la ciudad
-
+    
+    private ListaEnlazada sucursales; // Lista enlazada
+    private String ciudad;// Ciudad seleccionada
+    /**
+     * Constructor de la clase Grafo.
+     *
+     * @param ciudadInicial La ciudad inicial para establecer el grafo.
+     */
+    public Grafo(String ciudadInicial) {
+        sucursales = new ListaEnlazada(); // Inicializamos la lista enlazada
+        establecerCiudad(ciudadInicial);
+    }
+    
+    /**
+     * Obtiene el valor de t.
+     *
+     * @return El valor de t.
+     */    
     public int getT() {
         return t;
-    }
-
+    }    
+    
+    /**
+     * Establece el valor de t basado en la ciudad seleccionada.
+     *
+     * @param t El nuevo valor de t.
+     */
     public void setT(int t) {
         this.t = t;
     }
-    private ListaEnlazada sucursales; // Lista enlazada
-    private String ciudad;// Ciudad seleccionada
-
-    public Grafo(String ciudadInicial) {
-//        System.setProperty("org.graphstream.ui", "swing");
-//        grafo = new SingleGraph("Red de Transporte");
-        sucursales = new ListaEnlazada(); // Inicializamos la lista enlazada
-//        grafo.setAttribute("ui.stylesheet", "node { size: 14px; fill-color: red; } edge { fill-color: gray; }");
-        establecerCiudad(ciudadInicial);
-    }
-
-    // Este es el método que permite acceder al grafo desde otras clases
-//    public Graph getGraph() {
-//        return this.grafo;
-//    }
-    // Nuevo método getSucursales
+    
+    
+    /**
+     * Obtiene la lista de sucursales.
+     *
+     * @return La lista enlazada de sucursales.
+     */
     public ListaEnlazada getSucursales() {
         return sucursales; // Devuelve la lista enlazada de sucursales
     }
@@ -39,7 +49,11 @@ public class Grafo {
 //        grafo.display();
     }
 
-    // Establecer valor de t basado en la ciudad
+    /**
+     * Establece la ciudad del grafo y ajusta el valor de t según la ciudad.
+     *
+     * @param nuevaCiudad La nueva ciudad a establecer.
+     */
     public void establecerCiudad(String nuevaCiudad) {
         ciudad = nuevaCiudad;
         if (ciudad.equalsIgnoreCase("Caracas")) {
@@ -50,7 +64,13 @@ public class Grafo {
             t = 2; // Valor por defecto
         }
     }
-
+    
+    /**
+     * Obtiene un nodo de la lista de sucursales que corresponde a la parada dada.
+     *
+     * @param parada La parada a buscar.
+     * @return El nodo correspondiente a la parada, o null si no se encuentra.
+     */
     public NodoLista ObtenerNodo(String parada) {
         NodoLista actual = sucursales.getPrimero();
         while (actual != null) {
@@ -62,7 +82,12 @@ public class Grafo {
         return null;
     }
 
-    // Colocar sucursal en una parada
+    /**
+     * Coloca una nueva sucursal en la parada especificada.
+     *
+     * @param parada La parada donde se colocará la sucursal.
+     * @return true si la sucursal ya existía, false si fue agregada.
+     */
     public boolean colocarSucursal(String parada) {
         NodoLista aux = sucursales.getPrimero();
         if (sucursales.contiene(parada)) {
@@ -70,56 +95,56 @@ public class Grafo {
         }
 
         sucursales.agregar(parada); // Agregamos a la lista enlazada
-//        grafo.addNode(parada);
-//        grafo.getNode(parada).setAttribute("ui.class", parada);
-//        grafo.getNode(parada).setAttribute("ui.label", parada);
-
         return false; // La parada no existe
     }
 
-    // Des-seleccionar sucursal
+    /**
+     * Elimina una sucursal de la parada especificada.
+     *
+     * @param parada La parada de la que se eliminará la sucursal.
+     * @return true si la sucursal fue eliminada, false si no existía.
+     */
     public boolean quitarSucursal(String parada) {
         if (sucursales.eliminar(parada)) { // Eliminamos de la lista enlazada
-//            grafo.getNode(parada).removeAttribute("ui.class");
-//            grafo.getNode(parada).setAttribute("ui.label", "");
             return true;
         }
         return false; // No hay sucursal en la parada
     }
 
-    // Ver cobertura con DFS
+    /**
+     * Realiza una búsqueda en profundidad (DFS) para verificar la cobertura desde una sucursal.
+     *
+     * @param sucursal La sucursal desde la cual iniciar la búsqueda.
+     * @return Una lista de las paradas visitadas durante la búsqueda.
+     */
     public ListaEnlazada coberturaDFS(String sucursal) {
         ListaEnlazada visitadas = new ListaEnlazada();
-        dfs(sucursal, visitadas, t);
+        DFS(sucursal, visitadas, t);
         return visitadas; // Devuelve las paradas visitadas
     }
 
-    private void dfs(String parada, ListaEnlazada visitadas, int profundidad) {
+    private void DFS(String parada, ListaEnlazada visitadas, int profundidad) {
         if (profundidad < 0 || visitadas.contiene(parada)) {
             return;
         }
 
         visitadas.agregar(parada);
-//        Node nodo = grafo.getNode(parada);
-
-        // Usar edges() para obtener todas las aristas del nodo
-//        nodo.edges().forEach(arista -> {
-//            // Obtener el nodo opuesto directamente
-//            Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
-//            String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
-//            dfs(vecino, visitadas, profundidad - 1);
-//        });
     }
 
-    // Ver cobertura con BFS
+    /**
+     * Realiza una búsqueda en amplitud (BFS) para verificar la cobertura desde una sucursal.
+     *
+     * @param sucursal La sucursal desde la cual iniciar la búsqueda.
+     * @return Una lista de las paradas visitadas durante la búsqueda.
+     */
     public ListaEnlazada coberturaBFS(String sucursal) {
         ListaEnlazada visitadas = new ListaEnlazada();
-        bfs(sucursal, visitadas, t);
+        BFS(sucursal, visitadas, t);
         return visitadas; // Devuelve las paradas visitadas
     }
 
     // Implementación de BFS
-    private void bfs(String parada, ListaEnlazada visitadas, int maxProfundidad) {
+    private void BFS(String parada, ListaEnlazada visitadas, int maxProfundidad) {
         ListaDoble lista = new ListaDoble();
         lista.agregarFinal(parada);
         int nivel = 0;
@@ -130,67 +155,59 @@ public class Grafo {
                 String paradaActual = lista.removerFrente();
                 if (!visitadas.contiene(paradaActual)) {
                     visitadas.agregar(paradaActual);
-//                    Node nodo = grafo.getNode(paradaActual);
-
-                    // Usar edges() para obtener todas las aristas del nodo
-//                    nodo.edges().forEach(arista -> {
-//                        // Obtener el nodo opuesto directamente
-//                        Node vecinoNodo = arista.getTargetNode(); // Obtener el nodo objetivo de la arista
-//                        String vecino = vecinoNodo.getId(); // Obtener el ID del nodo opuesto
-//                        lista.agregarFinal(vecino);
-//                    });
                 }
             }
             nivel++;
         }
     }
-
-    // Revisar cobertura total de la ciudad
-//    public ListaEnlazada revisarCoberturaTotal() {
-//        ListaEnlazada paradasSinCobertura = new ListaEnlazada();
-//
-//        for (Node nodo : grafo) {
-//            paradasSinCobertura.agregar(nodo.getId());
-//        }
-//
-//        NodoLista actual = sucursales.getPrimero();
-//        while (actual != null) {
-//            ListaEnlazada cubiertas = new ListaEnlazada();
-//            dfs(actual.parada, cubiertas, t);
-//            paradasSinCobertura.eliminarVarios(cubiertas);
-//            actual = actual.siguiente;
-//        }
-//
-//        return paradasSinCobertura; // Devuelve las paradas sin cobertura
-//    }
-    // Sugerir paradas para colocar sucursales
+    /**
+     * Sugiere paradas para colocar sucursales basadas en la lista de paradas sin cobertura.
+     *
+     * @param paradasSinCobertura La lista de paradas sin cobertura.
+     * @return La lista de sugerencias de paradas para colocar sucursales.
+     */
     public ListaEnlazada sugerirSucursales(ListaEnlazada paradasSinCobertura) {
         return paradasSinCobertura; // Devuelve las sugerencias
     }
-}
 
+}
+/**
+ * Clase que representa un nodo doble en una lista doble.
+ */
 class NodoDoble {
 
     String parada;
     NodoDoble siguiente;
-
+    /**
+     * Constructor de la clase NodoDoble.
+     *
+     * @param parada La parada asociada a este nodo.
+     */
     NodoDoble(String parada) {
         this.parada = parada;
         this.siguiente = null;
     }
 }
-
+/**
+ * Clase que representa una lista doble.
+ */
 class ListaDoble {
 
     private NodoDoble cabeza;
     private NodoDoble cola;
-
+    /**
+     * Constructor de la clase ListaDoble.
+     */
     public ListaDoble() {
         cabeza = null;
         cola = null;
     }
 
-    // Agregar al final de la lista
+    /**
+     * Agrega un nuevo nodo al final de la lista.
+     *
+     * @param parada La parada a agregar.
+     */
     public void agregarFinal(String parada) {
         NodoDoble nuevo = new NodoDoble(parada);
         if (cabeza == null) {
@@ -204,7 +221,11 @@ class ListaDoble {
         }
     }
 
-    // Remover del frente de la lista
+    /**
+     * Remueve el nodo del frente de la lista.
+     *
+     * @return La parada removida, o null si la lista está vacía.
+     */
     public String removerFrente() {
         if (cabeza == null) {
             return null; // o lanzar una excepción si lo prefieres
@@ -218,12 +239,20 @@ class ListaDoble {
         return parada;
     }
 
-    // Verificar si la lista está vacía
+    /**
+     * Verifica si la lista está vacía.
+     *
+     * @return true si la lista está vacía, false en caso contrario.
+     */
     public boolean estaVacia() {
         return cabeza == null;
     }
 
-    // Obtener el tamaño de la lista
+    /**
+     * Obtiene el tamaño de la lista.
+     *
+     * @return El tamaño de la lista.
+     */
     public int tamaño() {
         int tamaño = 0;
         NodoDoble actual = cabeza;
@@ -234,35 +263,45 @@ class ListaDoble {
         return tamaño;
     }
 }
-// Implementación de la clase ListaEnlazada
-
+/**
+ * Clase que representa un nodo en una lista enlazada.
+ */
 class NodoLista {
 
     String parada;
     NodoLista siguiente;
     ListaEnlazada adyacentes;
     Boolean sucursal = false;
-
+    /**
+     * Constructor de la clase NodoLista.
+     *
+     * @param parada La parada asociada a este nodo.
+     */
     NodoLista(String parada) {
         this.adyacentes = new ListaEnlazada();
         this.parada = parada;
         this.siguiente = null;
     }
 }
-
+/**
+ * Clase que representa una lista enlazada.
+ */
 class ListaEnlazada {
 
     private NodoLista primero;
     private NodoLista ultimo;
 
-    public NodoLista getUltimo() {
-        return ultimo;
-    }
-
+    /**
+     * Constructor de la clase ListaEnlazada
+     */
     public ListaEnlazada() {
         this.primero = null;
     }
-
+    /**
+     * Agrega un nuevo nodo a la lista.
+     *
+     * @param parada La parada a agregar.
+     */
     public void agregar(String parada) {
         if (this.primero == null) {
             this.primero = new NodoLista(parada);
@@ -272,18 +311,13 @@ class ListaEnlazada {
             this.ultimo = this.ultimo.siguiente;
         }
 
-//        NodoLista nuevo = new NodoLista(parada);
-//        if (primero == null) {
-//            primero = nuevo;
-//        } else {
-//            NodoLista temp = primero;
-//            while (temp.siguiente != null) {
-//                temp = temp.siguiente;
-//            }
-//            temp.siguiente = nuevo;
-//        }
     }
-
+    /**
+     * Elimina un nodo de la lista.
+     *
+     * @param parada La parada a eliminar.
+     * @return true si se eliminó, false en caso contrario.
+     */
     public boolean eliminar(String parada) {
         if (primero == null) {
             return false;
@@ -304,7 +338,12 @@ class ListaEnlazada {
         }
         return false;
     }
-
+    /**
+     * Verifica si la lista contiene una parada específica.
+     *
+     * @param parada La parada a buscar.
+     * @return true si la lista contiene la parada, false en caso contrario.
+     */
     public boolean contiene(String parada) {
         NodoLista actual = primero;
         while (actual != null) {
@@ -315,7 +354,11 @@ class ListaEnlazada {
         }
         return false;
     }
-
+    /**
+     * Elimina varios nodos de la lista que se encuentran en otra lista.
+     *
+     * @param otraLista La lista de nodos a eliminar.
+     */
     public void eliminarVarios(ListaEnlazada otraLista) {
         NodoLista actual = otraLista.getPrimero();
         while (actual != null) {
@@ -323,15 +366,34 @@ class ListaEnlazada {
             actual = actual.siguiente;
         }
     }
-
+    /**
+     * Obtiene el primer nodo de la lista.
+     *
+     * @return El primer nodo de la lista.
+     */
     public NodoLista getPrimero() {
         return primero;
     }
-
+    
+    /**
+     * Obtiene el último nodo de la lista.
+     *
+     * @return El último nodo de la lista.
+     */
+    public NodoLista getUltimo() {
+        return ultimo;
+    }
+    /**
+     * Verifica si la lista está vacía.
+     *
+     * @return true si la lista está vacía, false en caso contrario.
+     */    
     public boolean estaVacia() {
         return primero == null;
     }
-
+    /**
+     * Muestra la lista enlazada.
+     */
     public void mostrar() {
         NodoLista actual = primero;
         while (actual != null) {

@@ -1,18 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.cobertura_de_sucursales;
 
 /**
  *
  * @author pablo
  */
-
 import javax.swing.JOptionPane;
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
-
 
 public class Interfaz2 extends javax.swing.JFrame {
 
@@ -50,7 +44,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboBoxTipoBusqueda = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
 
@@ -138,10 +132,10 @@ public class Interfaz2 extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        comboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                comboBoxTipoBusquedaActionPerformed(evt);
             }
         });
 
@@ -185,7 +179,7 @@ public class Interfaz2 extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboBoxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)))
                 .addGap(60, 60, 60))
             .addGroup(layout.createSequentialGroup()
@@ -215,7 +209,7 @@ public class Interfaz2 extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(NewSucursalinput, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(comboBoxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
@@ -243,7 +237,14 @@ public class Interfaz2 extends javax.swing.JFrame {
         a.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    /**
+     * Maneja el campo de entrada para el valor de 't'.
+     * Este método se ejecuta cuando se activa en el campo de texto
+     * asociado a la entrada del valor 't'. Intenta convertir la entrada del
+     * usuario a un entero y, si tiene éxito, establece este valor en el grafo.
+     * Si la conversión falla, muestra un mensaje de error al usuario.
+     * @param evt el evento de acción que ha activado este método.
+     */
     private void TinputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TinputActionPerformed
         String tString = Tinput.getText();
         try {
@@ -254,7 +255,15 @@ public class Interfaz2 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Entrada invalida");
         }
     }//GEN-LAST:event_TinputActionPerformed
-
+    /**
+     * Maneja el evento del campo de entrada para nuevas sucursales. Este método
+     * se ejecuta cuando se activa el evento en el campo de texto asociado a la
+     * nueva sucursal. Verifica si la parada ingresada existe y actualiza su
+     * estado como sucursal o no, mostrando un mensaje al usuario según el
+     * resultado de la operación.
+     *
+     * @param evt el evento de acción que ha activado este método.
+     */
     private void NewSucursalinputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSucursalinputActionPerformed
         String nombreEstacion = NewSucursalinput.getText();
         NodoLista parada = this.grafo.ObtenerNodo(nombreEstacion);
@@ -275,10 +284,16 @@ public class Interfaz2 extends javax.swing.JFrame {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
-
+    /**
+     * Este método se ejecuta cuando se activa el botón, y se encarga de crear y
+     * visualizar un grafo utilizando la biblioteca GraphStream. El grafo
+     * representa una serie de nodos (sucursales) y sus conexiones
+     * (adyacencias).
+     *
+     * @param evt el evento de acción que ha activado este método.
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.setProperty("org.graphstream.ui", "swing");
-
 
         Graph graph = new SingleGraph("Tutorial 1");
         {
@@ -291,13 +306,6 @@ public class Interfaz2 extends javax.swing.JFrame {
                     graph.getNode(aux.parada).setAttribute("ui.style", "fill-color: rgb(0,100,255);");
 
                 }
-//                System.out.println(aux.parada);
-//                NodoLista aux2 = aux.adyacentes.getPrimero();
-//                while (aux2 != null) {
-//                    graph.addEdge(aux.parada + aux2.parada, aux.parada, aux2.parada);
-//
-//                    aux2 = aux2.siguiente;
-//                }
                 aux = aux.siguiente;
             }
         }
@@ -316,24 +324,40 @@ public class Interfaz2 extends javax.swing.JFrame {
             }
             aux = aux.siguiente;
         }
-        
+
         graph.display(true);
 
-
-//        this.grafo.mostrarGrafo();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void comboBoxTipoBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxTipoBusquedaActionPerformed
+//        if ((String) comboBoxTipoBusqueda.getSelectedItem()) == null {
+//            return;    
+//    
+//        if (comboBoxTipoBusqueda.getSelectedItem() == "BFS") {
+//            this.grafo.setTipoBusqueda(TipoBusqueda.BFS);
+//        }else{
+//            this.grafo.setTipoBusqueda(TipoBusqueda.DFS);
+//        }
+//        this.grafo.asignarCoberturas();
+//        if (this.nombreParadaSeleccionada != null) {
+//            Vertice vertice = grafo.buscarVertice(nombreParadaSeleccionada);
+//            Visitado[] cobertura = vertice.getCobertura();
+//            textAreaCobertura.getText("");
+//            for (Visitado visitado : cobertura) {
+//                textAreaCobertura.append(visitado.toString() + "\n");
+//            }
+//            textAreaCobertura.setCaretPosition(0);
+//        }
+
+    }//GEN-LAST:event_comboBoxTipoBusquedaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField NewSucursalinput;
     public javax.swing.JTextField Tinput;
+    private javax.swing.JComboBox<String> comboBoxTipoBusqueda;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialog2;
     private javax.swing.JDialog jDialog3;

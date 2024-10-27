@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.cobertura_de_sucursales;
 
 /**
- *
+ * Main Class
  * @author pablo
  */
 import com.google.gson.JsonArray;
@@ -42,7 +38,6 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         jDialog1 = new javax.swing.JDialog();
         jDialog2 = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         cargarRedDesdeArchivo = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
@@ -70,14 +65,8 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("¡ BIENVENIDO A C.D.S inc !");
-
-        jButton1.setText("Ver Grafo");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         cargarRedDesdeArchivo.setText("Cargar nuevo archivo");
         cargarRedDesdeArchivo.addActionListener(new java.awt.event.ActionListener() {
@@ -93,36 +82,30 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(121, 121, 121)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(145, 145, 145)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cargarRedDesdeArchivo)
-                            .addComponent(jLabel1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(jButton1)))
+                        .addComponent(jLabel2)
+                        .addGap(22, 22, 22))
+                    .addComponent(cargarRedDesdeArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(137, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cargarRedDesdeArchivo)
-                .addGap(58, 58, 58)
-                .addComponent(jButton1)
-                .addGap(36, 36, 36))
+                .addGap(117, 117, 117))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     /**
      * Método que se ejecuta al activar la acción de cargar una red desde un
      * archivo. Este método permite al usuario seleccionar un archivo .json que
@@ -130,32 +113,34 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
      * archivo para cargar los datos en un grafo.
      *
      * @param evt El evento de acción que desencadena este método.
+     * @throws IOException Si ocurre un error al intentar leer el archivo
+     * seleccionado.
      */
     private void cargarRedDesdeArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarRedDesdeArchivoActionPerformed
         JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json"); // Crea un filtro para mostrar solo archivos con la extensión JSON.
         fileChooser.setFileFilter(filter);
 
-        int resultado = fileChooser.showOpenDialog(null);
+        int resultado = fileChooser.showOpenDialog(null); // Para mostrar el diálogo de apertura de archivo y espera la selección del usuario.
 
-        if (resultado == JFileChooser.APPROVE_OPTION) {
+        if (resultado == JFileChooser.APPROVE_OPTION) { // Se verifica si el usuario aprobó la selección de un archivo.
 
-            try (FileReader reader = new FileReader(fileChooser.getSelectedFile())) {
-                grafo = new Grafo("");
-                JsonParser parser = new JsonParser();
+            try (FileReader reader = new FileReader(fileChooser.getSelectedFile())) { // Para intentar abrir el archivo seleccionado por el usuario y leerlo linea por linea.
+                grafo = new Grafo(""); // Inicializa un nuevo objeto Grafo.
+                JsonParser parser = new JsonParser(); // Crea un parser JSON para interpretar el contenido del archivo.
                 JsonObject sistemaDeTransporteOjeto = parser.parse(reader).getAsJsonObject();
-                for (var claveValor : sistemaDeTransporteOjeto.entrySet()) {
-                    String nombreSisTransporte = claveValor.getKey();
+                for (var claveValor : sistemaDeTransporteOjeto.entrySet()) { // Se itera sobre cada entrada (clave-valor) en el objeto JSON.
+                    String nombreSisTransporte = claveValor.getKey(); 
                     this.grafo.establecerCiudad(nombreSisTransporte);
                     for (var lineaObjeto : claveValor.getValue().getAsJsonArray()) {
                         for (var lineaClaveValor : lineaObjeto.getAsJsonObject().entrySet()) {
                             JsonArray paradas = lineaClaveValor.getValue().getAsJsonArray();
-                            String ultimaparada = null;
-                            for (var paradaElemento : paradas) {
+                            String ultimaparada = null; // Se inicializa la variable para almacenar la última parada.
+                            for (var paradaElemento : paradas) { // Se itera sobre cada elemento en el array de paradas.
                                 if (paradaElemento.isJsonPrimitive()) {
                                     String paradaMetro = paradaElemento.getAsString();
                                     if (this.grafo.getSucursales().getPrimero() == null) {
-                                        this.grafo.colocarSucursal(paradaMetro);
+                                        this.grafo.colocarSucursal(paradaMetro); // Agrega la parada como sucursal.
                                         ultimaparada = paradaMetro;
                                     } else {
                                         this.grafo.colocarSucursal(paradaMetro);
@@ -166,11 +151,10 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                                             adyacente.adyacentes.agregar(paradaMetro);
                                         }
 
-                                        ultimaparada = paradaMetro;
-//                                        this.grafo.getSucursales().getUltimo().adyacentes.agregar(adyacente.parada);
+                                        ultimaparada = paradaMetro; // Actualiza la última parada.
 
                                     }
-                                } else if (paradaElemento.isJsonObject()) {
+                                } else if (paradaElemento.isJsonObject()) { // Verifica si el elemento es un objeto JSON (una conexión).
                                     var Conexion = paradaElemento.getAsJsonObject();
                                     for (var ConexionClaveValor : Conexion.entrySet()) {
                                         String Estacion1 = ConexionClaveValor.getKey();
@@ -180,17 +164,10 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
                                             adyacente.adyacentes.agregar(Estacion1);
                                         }
 
-                                        ultimaparada = Estacion1;
-                                        String Estacion2 = ConexionClaveValor.getValue().getAsString();
-                                        this.grafo.getSucursales().getUltimo().adyacentes.agregar(Estacion2);
+                                        ultimaparada = Estacion1; // Actualiza la última parada a la primera estación.
+                                        String Estacion2 = ConexionClaveValor.getValue().getAsString(); // Obtiene el nombre de la segunda estación.
+                                        this.grafo.getSucursales().getUltimo().adyacentes.agregar(Estacion2); // Agrega la segunda estación como sucursal.
                                         this.grafo.colocarSucursal(Estacion2);
-//                                        this.grafo.getGraph().addEdge(Estacion2 + Estacion1, Estacion2, Estacion1);
-
-//                                        try {
-//                                            this.grafo.getGraph().addEdge(Estacion2 + Estacion1, Estacion2, Estacion1);
-//                                        } catch (Exception e) {
-//
-//                                        }
 
                                     }
                                 }
@@ -209,16 +186,7 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "No se selecciono ningun archivo.");
         }
-
-
     }//GEN-LAST:event_cargarRedDesdeArchivoActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.grafo.mostrarGrafo();
-//        Interfaz3 b = new Interfaz3();
-//        b.setVisible(true);
-//        this.setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,7 +226,6 @@ public class Cobertura_de_sucursales extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cargarRedDesdeArchivo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialog2;
     private javax.swing.JLabel jLabel1;
