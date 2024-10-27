@@ -9,4 +9,6 @@ Proyecto enfocado para la cobertura de sucursales de una cadena de supermercados
     - Bogotá, en donde se toman las paradas del Transmilenio con t = 10.
 ## Notas del Programa:
 1. Si se va a ejecutar la opción de "Ver Grafo" en la interfaz, por favor tomar en cuenta que si se cierra la ventana del grafo se cerrará el programa.
+
+## Diagrama de clases (UML)
 [Diagrama de Clases](https://github.com/user-attachments/files/17535725/Diagrama.de.Clases.proyecto.EDD.Sebastian.Marval.Luis.Noriega.Pablo.Pelliccioni.1.pdf)
